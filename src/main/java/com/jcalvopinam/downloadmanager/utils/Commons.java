@@ -31,6 +31,9 @@ import org.apache.commons.validator.routines.UrlValidator;
  */
 public class Commons {
 
+    private Commons() {
+    }
+
     public static boolean isURLValid(String fileUrl) {
         UrlValidator urlValidator = new UrlValidator();
         return urlValidator.isValid(fileUrl);
@@ -40,7 +43,7 @@ public class Commons {
         return fileUrl.substring(fileUrl.lastIndexOf(Constants.PATH_SEPARATOR) + Constants.MIN_INDEX);
     }
 
-    public static String format(Integer value) {
+    public static String leftPad(Integer value) {
         return value <= 9 ? "0" + value : String.valueOf(value);
     }
 

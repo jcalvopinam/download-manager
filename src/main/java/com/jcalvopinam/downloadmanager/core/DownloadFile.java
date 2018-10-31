@@ -64,12 +64,12 @@ public class DownloadFile implements Runnable {
             fos.getChannel().transferFrom(rbc, Constants.MIN_INDEX, Long.MAX_VALUE);
 
             System.out.println(" [" + threadId + "]" +
-                                       "\t[" + Commons.format(file.getPriority()) + "]" +
+                                       "\t[" + Commons.leftPad(file.getPriority()) + "]" +
                                        "\t[✓] Downloaded! " + file.getFileUrl());
 
         } catch (Exception e) {
             System.err.println(" [" + threadId + "]" +
-                                       "\t[" + Commons.format(file.getPriority()) + "]" +
+                                       "\t[" + Commons.leftPad(file.getPriority()) + "]" +
                                        "\t[x] Error! " + e.getMessage());
         }
     }

@@ -24,10 +24,23 @@
 
 package com.jcalvopinam.downloadmanager;
 
+import java.util.List;
+
+import com.jcalvopinam.downloadmanager.core.Manager;
+import com.jcalvopinam.downloadmanager.domain.File;
+import com.jcalvopinam.downloadmanager.domain.FileResource;
+import com.jcalvopinam.downloadmanager.utils.InputData;
+
 /**
  * @author Juan Calvopina
  */
 public class DownloadManagerApplication {
+
     public static void main(String[] args) {
+        FileResource fileResource = FileResource.of(args);
+
+        List<File> files = InputData.readFile(fileResource.checkAndGetInput());
+        Manager.INSTANCE.download(files, fileResource.checkAndGetOutput());
     }
+
 }

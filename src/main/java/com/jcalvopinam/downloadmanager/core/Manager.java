@@ -22,48 +22,44 @@
  * SOFTWARE.
  */
 
-package com.jcalvopinam.downloadmanager.utils;
+package com.jcalvopinam.downloadmanager.core;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.jcalvopinam.downloadmanager.domain.File;
+import com.jcalvopinam.downloadmanager.utils.Commons;
+import com.jcalvopinam.downloadmanager.utils.Constants;
+
 
 /**
  * @author Juan Calvopina
  */
-public class InputData {
+public enum Manager {
 
+    INSTANCE;
 
-    public static List<File> readFile(String url) {
-        List<File> list = new ArrayList<>();
+    public void download(List<File> files, String saveAs) {
 
-        try (Stream<String> stream = Files.lines(Paths.get(url))) {
+        System.out.println(Commons.drawBox("TID: Thread ID", "PID: Priority ID"));
+        System.out.println(" TID_\tPID_\tStatus_");
 
-            stream.forEach(x -> {
-                String[] item = x.split(Constants.LINE_SEPARATOR);
-                if (item.length != Constants.MAX_INDEX) {
-                    System.err.println("The input file isn't valid!");
-                    System.exit(Constants.EXIT);
-                }
-                String fileURL = item[Constants.FILE];
-                if (Commons.isURLValid(fileURL)) {
-                    list.add(
-                            new File(Integer.valueOf(item[Constants.PRIORITY]), fileURL, Commons.getFileName(fileURL)));
-                }
-            });
-
-            list.sort(Comparator.comparing(File::getPriority));
-        } catch (IOException e) {
-            System.err.println("An error occurred while reading the file: " + e.getMessage());
+        ExecutorService pool = Executors.newFixedThreadPool(Constants.POOL_SIZE);
+        for (File file : files) {
+            pool.submit(new DownloadFile(file, saveAs));
         }
 
-        return list;
+        pool.shutdown();
+
+        try {
+            pool.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+            System.out.println("The downloads are complete!");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

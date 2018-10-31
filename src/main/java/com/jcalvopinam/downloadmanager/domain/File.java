@@ -32,10 +32,12 @@ import java.util.Objects;
 public class File {
 
     private Integer priority;
+    private String fileUrl;
     private String fileName;
 
-    public File(Integer priority, String fileName) {
+    public File(Integer priority, String fileUrl, String fileName) {
         this.priority = priority;
+        this.fileUrl = fileUrl;
         this.fileName = fileName;
     }
 
@@ -43,16 +45,12 @@ public class File {
         return priority;
     }
 
-    public void setPriority(Integer priority) {
-        this.priority = priority;
+    public String getFileUrl() {
+        return fileUrl;
     }
 
     public String getFileName() {
         return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
     }
 
     @Override
@@ -65,18 +63,19 @@ public class File {
         }
         File file = (File) o;
         return Objects.equals(priority, file.priority) &&
-                Objects.equals(fileName, file.fileName);
+                Objects.equals(fileUrl, file.fileUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(priority, fileName);
+        return Objects.hash(priority, fileUrl);
     }
 
     @Override
     public String toString() {
         return "File{" +
                 "priority=" + priority +
+                ", fileUrl='" + fileUrl + '\'' +
                 ", fileName='" + fileName + '\'' +
                 '}';
     }

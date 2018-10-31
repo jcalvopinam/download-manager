@@ -24,38 +24,72 @@
 
 package com.jcalvopinam.downloadmanager.utils;
 
-import java.net.URL;
+import org.apache.commons.validator.routines.UrlValidator;
 
 /**
  * @author Juan Calvopina
  */
 public class Commons {
 
-    private static final String HTTPS = "https://";
+    public static boolean isURLValid(String fileUrl) {
+        UrlValidator urlValidator = new UrlValidator();
+        return urlValidator.isValid(fileUrl);
+    }
 
-    public static URL verifyURL(String fileURL) {
-        if (!fileURL.toLowerCase().startsWith(HTTPS)) {
-            System.out.println(" [x] The source (" + fileURL + ") is not a valid URL," +
-                                       " this must start with HTTP or HTTPS protocol.");
-            return null;
-        } else {
-            System.out.println(" [✓] Source found: " + fileURL);
+    public static String getFileName(String fileUrl) {
+        return fileUrl.substring(fileUrl.lastIndexOf(Constants.PATH_SEPARATOR) + Constants.MIN_INDEX);
+    }
+
+    public static String format(Integer value) {
+        return value <= 9 ? "0" + value : String.valueOf(value);
+    }
+
+    public static String drawLine(int number) {
+        StringBuilder line = new StringBuilder();
+        for (int i = 0; i < number; i++) {
+            line.append("-");
+        }
+        return line.toString();
+    }
+
+    public static String drawBox(String... message) {
+
+        StringBuilder joinMessages = new StringBuilder();
+
+        int maxLength = 0;
+        for (int i = 0; i < message.length; i++) {
+            if (message[i].length() > maxLength) {
+                maxLength = message[i].length() + Constants.MIN_INDEX;
+            }
         }
 
-        URL verifiedUrl = null;
-        try {
-            verifiedUrl = new URL(fileURL);
-        } catch (Exception e) {
-            System.err.println("An error occurred with the URL.");
-            return null;
+        for (int i = 0; i < message.length; i++) {
+            if (i == message.length - 1) {
+                joinMessages.append(formatMessage(message[i], maxLength));
+            } else {
+                joinMessages.append(formatMessage(message[i], maxLength) + Constants.LINE_FEED);
+            }
         }
 
-        if (verifiedUrl.getFile().length() < 2) {
-            System.err.println("The URL doesn't have a specific file to download.");
-            return null;
-        }
+        String drawLine = drawLine(maxLength * 2);
 
-        return verifiedUrl;
+        StringBuilder output = new StringBuilder();
+        output.append(Constants.LINE_FEED)
+              .append(drawLine)
+              .append(Constants.LINE_FEED)
+              .append(joinMessages.toString())
+              .append(Constants.LINE_FEED)
+              .append(drawLine)
+              .append(Constants.LINE_FEED);
+        return output.toString();
+    }
+
+    private static String formatMessage(String message, int maxLength) {
+        StringBuilder messageOutput = new StringBuilder();
+        messageOutput.append(Constants.PIPE)
+                     .append(message.replace("\n", " |\n|"));
+        String result = messageOutput.toString();
+        return String.format("%1$-" + maxLength + "s%2$" + maxLength + "s", result, Constants.PIPE);
     }
 
 }

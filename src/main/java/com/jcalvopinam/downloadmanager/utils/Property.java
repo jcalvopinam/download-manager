@@ -22,26 +22,35 @@
  * SOFTWARE.
  */
 
-package com.jcalvopinam.downloadmanager;
+package com.jcalvopinam.downloadmanager.utils;
 
-import java.util.List;
-
-import com.jcalvopinam.downloadmanager.core.Manager;
-import com.jcalvopinam.downloadmanager.domain.File;
-import com.jcalvopinam.downloadmanager.utils.InputData;
-import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 /**
  * @author Juan Calvopina
  */
-public class DownloadManagerApplicationTest {
-    @Test
-    public void shouldAnswerWithTrue() {
-        String fileResource = "items.txt";
-        List<File> files = InputData.readFile(fileResource);
-        Manager.INSTANCE.download(files, "/home/juan/Desktop/");
-        assertTrue(true);
+public class Property {
+
+    public static String getString(String property) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.APPLICATION_PROPERTIES);
+        try {
+            return resourceBundle.getString(property);
+        } catch (MissingResourceException e) {
+            System.err.println("Property doesn't found: " + e.getMessage());
+        }
+        return null;
     }
+
+    public static Integer getInt(String property) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.APPLICATION_PROPERTIES);
+        Integer value = 0;
+        try {
+            value = Integer.valueOf(resourceBundle.getString(property));
+        } catch (MissingResourceException e) {
+            System.err.println("Property doesn't found: " + e.getMessage());
+        }
+        return value;
+    }
+
 }

@@ -22,26 +22,26 @@
  * SOFTWARE.
  */
 
-package com.jcalvopinam.downloadmanager;
+package com.jcalvopinam.downloadmanager.utils;
 
-import java.util.List;
-
-import com.jcalvopinam.downloadmanager.core.Manager;
-import com.jcalvopinam.downloadmanager.domain.File;
-import com.jcalvopinam.downloadmanager.utils.InputData;
-import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
+import java.util.Objects;
 
 /**
  * @author Juan Calvopina
  */
-public class DownloadManagerApplicationTest {
-    @Test
-    public void shouldAnswerWithTrue() {
-        String fileResource = "items.txt";
-        List<File> files = InputData.readFile(fileResource);
-        Manager.INSTANCE.download(files, "/home/juan/Desktop/");
-        assertTrue(true);
-    }
+public class Constants {
+    public static final int PRIORITY = 0;
+    public static final int EXIT = 0;
+    public static final int FILE = 1;
+    public static final int MIN_INDEX = 1;
+    public static final int MAX_INDEX = 2;
+    public static final int FIRST_ELEMENT = 0;
+    public static final int SECOND_ELEMENT = 1;
+    public static final String APPLICATION_PROPERTIES = "application";
+    public static final String PATH_SEPARATOR = Objects.requireNonNull(Property.getString("path.separator"));
+    public static final String LINE_SEPARATOR = Objects.requireNonNull(Property.getString("line.separator"));
+    public static final String OUTPUT_FOLDER = Property.getString("output.folder");
+    public static final Integer POOL_SIZE = Property.getInt("pool.size");
+    public static final String LINE_FEED = "\n";
+    public static final String PIPE = "|";
 }

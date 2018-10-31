@@ -24,24 +24,56 @@
 
 package com.jcalvopinam.downloadmanager;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.jcalvopinam.downloadmanager.core.Manager;
 import com.jcalvopinam.downloadmanager.domain.File;
 import com.jcalvopinam.downloadmanager.utils.InputData;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
-import static org.junit.Assert.assertTrue;
+import static org.powermock.api.mockito.PowerMockito.*;
+
+//import org.mockito.Mockito;
 
 /**
  * @author Juan Calvopina
  */
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({InputData.class, Manager.class})
 public class DownloadManagerApplicationTest {
+
+    public static final String FILE_URL = "https://www.github.com/juanca87";
+    public static final String FILE_NAME = "github";
+    public static final int PRIORITY = 1;
+
     @Test
-    public void shouldAnswerWithTrue() {
-        String fileResource = "items.txt";
-        List<File> files = InputData.readFile(fileResource);
-        Manager.INSTANCE.download(files, "/home/juan/Desktop/");
-        assertTrue(true);
+    public void testMainMethod() {
+        String inputFile = DownloadManagerApplicationTest.class.getClassLoader().getResource("items.txt").getPath();
+        String outputFile = System.getProperty("java.io.tmpdir") + "/";
+        String[] args = {inputFile, outputFile};
+
+        PowerMockito.mockStatic(InputData.class);
+
+        when(InputData.readFile(args[0])).thenReturn(createFileList());
+        List<File> files = InputData.readFile(args[0]);
+
+        Manager mockInstance = mock(Manager.class);
+        Whitebox.setInternalState(Manager.class, "INSTANCE", mockInstance);
+
+        PowerMockito.doNothing().when(mockInstance).download(files, "");
+
+        DownloadManagerApplication.main(args);
     }
+
+    private List<File> createFileList() {
+        File file = new File(PRIORITY, FILE_URL, FILE_NAME);
+        return Arrays.asList(file);
+    }
+
 }

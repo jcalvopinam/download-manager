@@ -22,37 +22,15 @@
  * SOFTWARE.
  */
 
-package com.jcalvopinam.downloadmanager.utils;
-
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+package com.jcalvopinam.downloadmanager.exception;
 
 /**
  * @author Juan Calvopina
  */
-public class Property {
+public class ManagerException extends RuntimeException {
 
-    private Property() {
-    }
-
-    public static String getString(String property) {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.APPLICATION_PROPERTIES);
-        try {
-            return resourceBundle.getString(property);
-        } catch (MissingResourceException e) {
-            throw new MissingResourceException("Property doesn't found.", e.getMessage(), "");
-        }
-    }
-
-    public static Integer getInt(String property) {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.APPLICATION_PROPERTIES);
-        Integer value = 0;
-        try {
-            value = Integer.valueOf(resourceBundle.getString(property));
-        } catch (MissingResourceException e) {
-            throw new MissingResourceException("Property doesn't found.", e.getMessage(), "");
-        }
-        return value;
+    public ManagerException(String message) {
+        super(message);
     }
 
 }

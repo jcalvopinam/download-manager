@@ -26,6 +26,7 @@ package com.jcalvopinam.downloadmanager.utils;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -33,12 +34,12 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import com.jcalvopinam.downloadmanager.domain.File;
+import com.jcalvopinam.downloadmanager.exception.ManagerException;
 
 /**
  * @author Juan Calvopina
  */
 public class InputData {
-
 
     public static List<File> readFile(String url) {
         List<File> list = new ArrayList<>();
@@ -48,8 +49,7 @@ public class InputData {
             stream.forEach(x -> {
                 String[] item = x.split(Constants.LINE_SEPARATOR);
                 if (item.length != Constants.MAX_INDEX) {
-                    System.err.println("The input file isn't valid!");
-                    System.exit(Constants.EXIT);
+                    throw new ManagerException("The input file isn't valid!");
                 }
                 String fileURL = item[Constants.FILE];
                 if (Commons.isURLValid(fileURL)) {
@@ -60,7 +60,7 @@ public class InputData {
 
             list.sort(Comparator.comparing(File::getPriority));
         } catch (IOException e) {
-            System.err.println("An error occurred while reading the file: " + e.getMessage());
+            throw new ManagerException("An error occurred while reading the file: " + e.getMessage());
         }
 
         return list;

@@ -26,6 +26,7 @@ package com.jcalvopinam.downloadmanager.domain;
 
 import java.io.File;
 
+import com.jcalvopinam.downloadmanager.exception.ManagerException;
 import com.jcalvopinam.downloadmanager.utils.Constants;
 
 /**
@@ -41,23 +42,17 @@ public class FileResource {
         this.output = output;
     }
 
-    public static FileResource of(String input, String output) {
-        return new FileResource(input, output);
-    }
-
     public static FileResource of(String[] args) {
         return new FileResource(checkAndGetInput(args), checkAndGetOutput(args));
     }
 
     private static String checkAndGetInput(String[] args) {
         if (args.length < Constants.MIN_INDEX) {
-            System.err.println("Please enter the file path with the items to download!");
-            System.exit(Constants.EXIT);
+            throw new ManagerException("Please enter the file path with the items to download!");
         }
         File file = new File(args[Constants.FIRST_ELEMENT]);
         if (!file.exists()) {
-            System.err.println("The file doesn't exist, please try again...");
-            System.exit(Constants.EXIT);
+            throw new ManagerException("The file doesn't exist, please try again...");
         }
         return args[Constants.FIRST_ELEMENT];
     }

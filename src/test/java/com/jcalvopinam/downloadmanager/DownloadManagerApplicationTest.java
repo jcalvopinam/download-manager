@@ -39,8 +39,6 @@ import org.powermock.reflect.Whitebox;
 
 import static org.powermock.api.mockito.PowerMockito.*;
 
-//import org.mockito.Mockito;
-
 /**
  * @author Juan Calvopina
  */

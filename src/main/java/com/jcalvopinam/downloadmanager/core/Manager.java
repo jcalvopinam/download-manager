@@ -25,14 +25,16 @@
 package com.jcalvopinam.downloadmanager.core;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import com.jcalvopinam.downloadmanager.domain.File;
 import com.jcalvopinam.downloadmanager.utils.Commons;
 import com.jcalvopinam.downloadmanager.utils.Constants;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Juan Calvopina
@@ -41,24 +43,28 @@ public enum Manager {
 
     INSTANCE;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Manager.class);
+
     public void download(List<File> files, String saveAs) {
 
-        System.out.println(Commons.drawBox("TID: Thread ID", "PID: Priority ID"));
+        LOGGER.info(":: Start downloading... ::");
+        System.out.println(Commons.drawBox("Total files to be downloaded: " + files.size(),
+                                           "TID: Thread ID", "PID: Priority ID"));
         System.out.println(" TID_\tPID_\tStatus_");
 
         ExecutorService pool = Executors.newFixedThreadPool(Constants.POOL_SIZE);
-        for (File file : files) {
-            pool.submit(new DownloadFile(file, saveAs));
-        }
 
+        CompletableFuture<?>[] futures = files.stream()
+                                              .map(file -> new DownloadFile(file, saveAs))
+                                              .collect(Collectors.toList())
+                                              .stream()
+                                              .map(task -> CompletableFuture.runAsync(task, pool))
+                                              .toArray(CompletableFuture[]::new);
+
+        CompletableFuture.allOf(futures).join();
         pool.shutdown();
 
-        try {
-            pool.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
-            System.out.println("The downloads are complete!");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        LOGGER.info(":: The downloads are complete! ::");
 
     }
 

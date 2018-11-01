@@ -46,6 +46,7 @@ import static org.powermock.api.mockito.PowerMockito.*;
 @PrepareForTest({InputData.class, Manager.class})
 public class DownloadManagerApplicationTest {
 
+    public static final String OUTPUT_FILE = System.getProperty("java.io.tmpdir") + java.io.File.separator;
     public static final String FILE_URL = "https://www.github.com/juanca87";
     public static final String FILE_NAME = "github";
     public static final int PRIORITY = 1;
@@ -53,8 +54,7 @@ public class DownloadManagerApplicationTest {
     @Test
     public void testMainMethod() {
         String inputFile = DownloadManagerApplicationTest.class.getClassLoader().getResource("items.txt").getPath();
-        String outputFile = System.getProperty("java.io.tmpdir") + "/";
-        String[] args = {inputFile, outputFile};
+        String[] args = {inputFile, OUTPUT_FILE};
 
         PowerMockito.mockStatic(InputData.class);
 

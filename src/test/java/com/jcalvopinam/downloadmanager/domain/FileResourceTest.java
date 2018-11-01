@@ -30,6 +30,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.jcalvopinam.downloadmanager.DownloadManagerApplicationTest.OUTPUT_FILE;
+
 /**
  * @author Juan Calvopina
  */
@@ -40,8 +42,7 @@ public class FileResourceTest {
     @Before
     public void setUp() {
         String inputFile = DownloadManagerApplicationTest.class.getClassLoader().getResource("items.txt").getPath();
-        String outputFile = System.getProperty("java.io.tmpdir");
-        String[] argss = {inputFile, outputFile};
+        String[] argss = {inputFile, OUTPUT_FILE};
         fileResource = FileResource.of(argss);
     }
 
@@ -59,7 +60,7 @@ public class FileResourceTest {
     @Test
     public void testCheckAndGetOutputNotNull() {
         String output = fileResource.checkAndGetOutput();
-        String expected = "/tmp";
+        String expected = OUTPUT_FILE;
         Assert.assertNotNull(output);
         Assert.assertEquals(expected, output);
     }

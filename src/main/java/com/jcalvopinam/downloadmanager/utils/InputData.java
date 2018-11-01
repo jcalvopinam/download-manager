@@ -34,11 +34,15 @@ import java.util.stream.Stream;
 
 import com.jcalvopinam.downloadmanager.domain.File;
 import com.jcalvopinam.downloadmanager.exception.ManagerException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Juan Calvopina
  */
 public class InputData {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(InputData.class);
 
     public static List<File> readFile(String url) {
         List<File> list = new ArrayList<>();
@@ -54,6 +58,8 @@ public class InputData {
                 if (Commons.isURLValid(fileURL)) {
                     list.add(
                             new File(Integer.valueOf(item[Constants.PRIORITY]), fileURL, Commons.getFileName(fileURL)));
+                } else {
+                    LOGGER.error(" [x] This file is not a valid URl: {}", fileURL);
                 }
             });
 

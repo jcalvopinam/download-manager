@@ -20,24 +20,36 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <powermock.version>1.7.1</powermock.version>
+        <commons-validator.version>1.4.0</commons-validator.version>
+        <logback-classic.version>1.2.3</logback-classic.version>
+        <junit.version>4.11</junit.version>
     </properties>
 
     <dependencies>
+
         <!-- Apache commons dependency -->
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
-            <version>1.4.0</version>
+            <version>${commons-validator.version}</version>
+        </dependency>
+
+        <!-- Logger dependency-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic.version}</version>
         </dependency>
 
         <!-- Unit test dependency -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
+        <!-- PowerMock dependency-->
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-module-junit4</artifactId>

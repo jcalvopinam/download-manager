@@ -31,7 +31,6 @@ import java.util.Objects;
  */
 public class Constants {
     public static final int PRIORITY = 0;
-    public static final int EXIT = 0;
     public static final int FILE = 1;
     public static final int MIN_INDEX = 1;
     public static final int MAX_INDEX = 2;

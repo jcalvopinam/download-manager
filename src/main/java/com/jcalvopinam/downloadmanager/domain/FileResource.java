@@ -28,11 +28,15 @@ import java.io.File;
 
 import com.jcalvopinam.downloadmanager.exception.ManagerException;
 import com.jcalvopinam.downloadmanager.utils.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Juan Calvopina
  */
 public class FileResource {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileResource.class);
 
     private String input;
     private String output;
@@ -59,7 +63,7 @@ public class FileResource {
 
     private static String checkAndGetOutput(String[] arg) {
         if (arg.length < Constants.MAX_INDEX) {
-            System.err.println("The output path is empty. The files will be downloaded in this directory!");
+            LOGGER.info("The output path is empty. The files will be downloaded in this directory!\n");
             return "";
         }
         return arg[Constants.SECOND_ELEMENT];

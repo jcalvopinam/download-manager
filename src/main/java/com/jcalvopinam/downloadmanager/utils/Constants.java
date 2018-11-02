@@ -30,6 +30,7 @@ import java.util.Objects;
  * @author Juan Calvopina
  */
 public class Constants {
+
     public static final int PRIORITY = 0;
     public static final int FILE = 1;
     public static final int MIN_INDEX = 1;
@@ -43,4 +44,8 @@ public class Constants {
     public static final Integer POOL_SIZE = Property.getInt("pool.size");
     public static final String LINE_FEED = "\n";
     public static final String PIPE = "|";
+
+    private Constants() {
+    }
+
 }

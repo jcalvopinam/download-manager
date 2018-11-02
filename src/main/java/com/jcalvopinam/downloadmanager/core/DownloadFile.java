@@ -25,6 +25,7 @@
 package com.jcalvopinam.downloadmanager.core;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -33,11 +34,15 @@ import java.util.Optional;
 import com.jcalvopinam.downloadmanager.domain.File;
 import com.jcalvopinam.downloadmanager.utils.Commons;
 import com.jcalvopinam.downloadmanager.utils.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Juan Calvopina
  */
 public class DownloadFile implements Runnable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DownloadFile.class);
 
     private final String saveAs;
     private File file;
@@ -53,24 +58,25 @@ public class DownloadFile implements Runnable {
         downloadFile(file, saveAs, threadId);
     }
 
-    private void downloadFile(File file, String saveAs, long threadId) {
+    private void downloadFile(File file, String saveAs, long thread) {
+        final String threadId = Commons.leftPad((int) thread);
+        final String priorityId = Commons.leftPad(file.getPriority());
+
         try {
             URL url = new URL(file.getFileUrl());
-            ReadableByteChannel rbc = Channels.newChannel(url.openStream());
 
-            long currentTime = System.currentTimeMillis();
+            try (ReadableByteChannel rbc = Channels.newChannel(url.openStream())) {
+                long currentTime = System.currentTimeMillis();
 
-            FileOutputStream fos = new FileOutputStream(saveAs + currentTime + "_" + file.getFileName());
-            fos.getChannel().transferFrom(rbc, Constants.MIN_INDEX, Long.MAX_VALUE);
+                try (FileOutputStream fos = new FileOutputStream(saveAs + currentTime + "_" + file.getFileName())) {
+                    fos.getChannel().transferFrom(rbc, Constants.MIN_INDEX, Long.MAX_VALUE);
+                }
+            }
 
-            System.out.println(" [" + threadId + "]" +
-                                       "\t[" + Commons.leftPad(file.getPriority()) + "]" +
-                                       "\t[✓] Downloaded! " + file.getFileUrl());
+            LOGGER.info(" [{}]\t[{}]\t[✓] Downloaded! {}", threadId, priorityId, file.getFileUrl());
 
-        } catch (Exception e) {
-            System.err.println(" [" + threadId + "]" +
-                                       "\t[" + Commons.leftPad(file.getPriority()) + "]" +
-                                       "\t[x] Error! " + e.getMessage());
+        } catch (IOException e) {
+            LOGGER.error(" [{}]\t[{}]\t[x] Error! {}", threadId, priorityId, e.getMessage());
         }
     }
 

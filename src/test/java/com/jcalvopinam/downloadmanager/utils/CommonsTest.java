@@ -34,6 +34,8 @@ import static com.jcalvopinam.downloadmanager.DownloadManagerApplicationTest.FIL
  */
 public class CommonsTest {
 
+    private int lengthExpected = 3;
+
     @Test
     public void isURLValid() {
         Assert.assertTrue(Commons.isURLValid(FILE_URL));
@@ -56,17 +58,15 @@ public class CommonsTest {
     @Test
     public void testLeftPadLessThanNine() {
         int value = 7;
-        String leftPad = Commons.leftPad(value);
-        String expected = "0" + value;
-        Assert.assertEquals(expected, leftPad);
+        int leftPad = Commons.leftPad(value).length();
+        Assert.assertEquals(lengthExpected, leftPad);
     }
 
     @Test
     public void testLeftPadUpperThanNine() {
         int value = 19;
-        String leftPad = Commons.leftPad(value);
-        String expected = String.valueOf(value);
-        Assert.assertEquals(expected, leftPad);
+        int leftPad = Commons.leftPad(value).length();
+        Assert.assertEquals(lengthExpected, leftPad);
     }
 
     @Test

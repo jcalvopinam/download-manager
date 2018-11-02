@@ -44,6 +44,9 @@ public class InputData {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InputData.class);
 
+    private InputData() {
+    }
+
     public static List<File> readFile(String url) {
         List<File> list = new ArrayList<>();
 

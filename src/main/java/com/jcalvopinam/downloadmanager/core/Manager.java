@@ -48,9 +48,10 @@ public enum Manager {
     public void download(List<File> files, String saveAs) {
 
         LOGGER.info(":: Start downloading... ::");
-        System.out.println(Commons.drawBox("Total files to be downloaded: " + files.size(),
-                                           "TID: Thread ID", "PID: Priority ID"));
-        System.out.println(" TID_\tPID_\tStatus_");
+        final String legend = Commons.drawBox("Total files to be downloaded: " + files.size(),
+                                              "TID: Thread ID", "PID: Priority ID");
+        LOGGER.info("{}", legend);
+        LOGGER.info("\tTID_\tPID_\tStatus_");
 
         ExecutorService pool = Executors.newFixedThreadPool(Constants.POOL_SIZE);
 

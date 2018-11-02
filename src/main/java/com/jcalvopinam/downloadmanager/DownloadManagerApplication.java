@@ -31,14 +31,19 @@ import com.jcalvopinam.downloadmanager.domain.File;
 import com.jcalvopinam.downloadmanager.domain.FileResource;
 import com.jcalvopinam.downloadmanager.utils.Commons;
 import com.jcalvopinam.downloadmanager.utils.InputData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Juan Calvopina
  */
 public class DownloadManagerApplication {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DownloadManagerApplication.class);
+
     public static void main(String[] args) {
-        System.out.println(Commons.drawBox("Welcome to DownloadManager"));
+        final String welcomeMessage = Commons.drawBox("Welcome to DownloadManager");
+        LOGGER.info("\n{}", welcomeMessage);
 
         FileResource fileResource = FileResource.of(args);
 

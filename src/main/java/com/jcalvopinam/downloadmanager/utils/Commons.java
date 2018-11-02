@@ -24,6 +24,9 @@
 
 package com.jcalvopinam.downloadmanager.utils;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.apache.commons.validator.routines.UrlValidator;
 
 /**
@@ -44,15 +47,11 @@ public class Commons {
     }
 
     public static String leftPad(Integer value) {
-        return value <= 9 ? "0" + value : String.valueOf(value);
+        return String.format("%03d", value);
     }
 
     public static String drawLine(int number) {
-        StringBuilder line = new StringBuilder();
-        for (int i = 0; i < number; i++) {
-            line.append("-");
-        }
-        return line.toString();
+        return IntStream.range(0, number).mapToObj(i -> "-").collect(Collectors.joining());
     }
 
     public static String drawBox(String... message) {
@@ -60,9 +59,9 @@ public class Commons {
         StringBuilder joinMessages = new StringBuilder();
 
         int maxLength = 0;
-        for (int i = 0; i < message.length; i++) {
-            if (message[i].length() > maxLength) {
-                maxLength = message[i].length() + Constants.MIN_INDEX;
+        for (String aMessage : message) {
+            if (aMessage.length() > maxLength) {
+                maxLength = aMessage.length() + Constants.MIN_INDEX;
             }
         }
 
@@ -70,29 +69,23 @@ public class Commons {
             if (i == message.length - 1) {
                 joinMessages.append(formatMessage(message[i], maxLength));
             } else {
-                joinMessages.append(formatMessage(message[i], maxLength) + Constants.LINE_FEED);
+                joinMessages.append(formatMessage(message[i], maxLength))
+                            .append(Constants.LINE_FEED);
             }
         }
 
         String drawLine = drawLine(maxLength * 2);
 
-        StringBuilder output = new StringBuilder();
-        output.append(Constants.LINE_FEED)
-              .append(drawLine)
-              .append(Constants.LINE_FEED)
-              .append(joinMessages.toString())
-              .append(Constants.LINE_FEED)
-              .append(drawLine)
-              .append(Constants.LINE_FEED);
-        return output.toString();
+        return Constants.LINE_FEED + drawLine +
+                Constants.LINE_FEED + joinMessages.toString() +
+                Constants.LINE_FEED + drawLine +
+                Constants.LINE_FEED;
     }
 
     private static String formatMessage(String message, int maxLength) {
-        StringBuilder messageOutput = new StringBuilder();
-        messageOutput.append(Constants.PIPE)
-                     .append(message.replace("\n", " |\n|"));
-        String result = messageOutput.toString();
-        return String.format("%1$-" + maxLength + "s%2$" + maxLength + "s", result, Constants.PIPE);
+        String result = Constants.PIPE + message.replace("\n", " |\n|");
+        String format = "%1$-" + maxLength + "s%2$" + maxLength + "s";
+        return String.format(format, result, Constants.PIPE);
     }
 
 }

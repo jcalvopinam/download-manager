@@ -25,6 +25,7 @@
 package com.jcalvopinam.downloadmanager.utils;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.jcalvopinam.downloadmanager.DownloadManagerApplicationTest;
 import com.jcalvopinam.downloadmanager.domain.File;
@@ -39,15 +40,17 @@ import static org.junit.Assert.assertNotNull;
 public class InputDataTest {
 
     @Test
-    public void shouldAnswerWithTrue() {
-        String file = DownloadManagerApplicationTest.class.getClassLoader().getResource("items.txt").getPath();
+    public void testShouldAnswerWithTrue() {
+        String file = Objects.requireNonNull(
+                DownloadManagerApplicationTest.class.getClassLoader().getResource("items.txt")).getPath();
         List<File> files = InputData.readFile(file);
         assertNotNull(files);
     }
 
     @Test(expected = ManagerException.class)
     public void testInvalidFormatInputFile() {
-        String file = DownloadManagerApplicationTest.class.getClassLoader().getResource("itemsInvalid.txt").getPath();
+        String file = Objects.requireNonNull(
+                DownloadManagerApplicationTest.class.getClassLoader().getResource("itemsInvalid.txt")).getPath();
         InputData.readFile(file);
     }
 

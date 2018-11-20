@@ -47,7 +47,7 @@ public class DownloadFile implements Runnable {
     private final String saveAs;
     private File file;
 
-    public DownloadFile(File file, String saveAs) {
+    DownloadFile(File file, String saveAs) {
         this.file = file;
         this.saveAs = Optional.of(saveAs).orElse(Constants.OUTPUT_FOLDER);
     }

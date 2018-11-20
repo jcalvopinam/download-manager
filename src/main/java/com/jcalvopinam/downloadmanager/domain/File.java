@@ -53,6 +53,9 @@ public class File {
         return fileName;
     }
 
+    /**
+     * It is not necessary for this case to evaluate the fileName attribute because the name will not be unique
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -44,6 +44,7 @@ public enum Manager {
     INSTANCE;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Manager.class);
+    private final ExecutorService pool = Executors.newFixedThreadPool(Constants.POOL_SIZE);
 
     public void download(List<File> files, String saveAs) {
 
@@ -52,8 +53,6 @@ public enum Manager {
                                               "TID: Thread ID", "PID: Priority ID");
         LOGGER.info("{}", legend);
         LOGGER.info("\tTID_\tPID_\tStatus_");
-
-        ExecutorService pool = Executors.newFixedThreadPool(Constants.POOL_SIZE);
 
         CompletableFuture<?>[] futures = files.stream()
                                               .map(file -> new DownloadFile(file, saveAs))

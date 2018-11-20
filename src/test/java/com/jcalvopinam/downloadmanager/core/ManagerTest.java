@@ -40,12 +40,15 @@ import static com.jcalvopinam.downloadmanager.utils.Commons.getFileName;
  */
 public class ManagerTest {
 
-    public static final String ROBOTS_URL = "https://www.google.com/robots.txt";
-    public static final String RESEARCH_URL = "http://research.google.com/publications_list.txt";
-    public static final String WRONG_URL = "https://localhost.io";
+    private static final String ROBOTS_URL = "https://www.google.com/robots.txt";
+    private static final String RESEARCH_URL = "http://research.google.com/publications_list.txt";
+    private static final String WRONG_URL = "https://localhost.io";
 
+    /**
+     * This test only checks the invocation to the download method.
+     */
     @Test
-    public void download() {
+    public void testDownloadMethod() {
         List<File> files = createFileList();
         Manager.INSTANCE.download(files, OUTPUT_FILE);
     }

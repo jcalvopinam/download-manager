@@ -37,13 +37,15 @@ public class Constants {
     public static final int MAX_INDEX = 2;
     public static final int FIRST_ELEMENT = 0;
     public static final int SECOND_ELEMENT = 1;
+
     public static final String APPLICATION_PROPERTIES = "application";
     public static final String PATH_SEPARATOR = Objects.requireNonNull(Property.getString("path.separator"));
     public static final String LINE_SEPARATOR = Objects.requireNonNull(Property.getString("line.separator"));
     public static final String OUTPUT_FOLDER = Property.getString("output.folder");
-    public static final Integer POOL_SIZE = Property.getInt("pool.size");
     public static final String LINE_FEED = "\n";
     public static final String PIPE = "|";
+
+    public static final Integer POOL_SIZE = Property.getInt("pool.size");
 
     private Constants() {
     }

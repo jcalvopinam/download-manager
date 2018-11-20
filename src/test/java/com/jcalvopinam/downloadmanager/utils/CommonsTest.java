@@ -37,8 +37,13 @@ public class CommonsTest {
     private int lengthExpected = 3;
 
     @Test
-    public void isURLValid() {
-        Assert.assertTrue(Commons.isURLValid(FILE_URL));
+    public void testIsURLValid() {
+        Assert.assertTrue(Commons.isURLValid("https://www.github.com/juanca87"));
+    }
+
+    @Test
+    public void testIsURLInvalid() {
+        Assert.assertFalse(Commons.isURLValid("http://"));
     }
 
     @Test

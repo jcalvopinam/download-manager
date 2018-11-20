@@ -33,4 +33,8 @@ public class ManagerException extends RuntimeException {
         super(message);
     }
 
+    public ManagerException(String message, Throwable exception) {
+        super(message, exception);
+    }
+
 }

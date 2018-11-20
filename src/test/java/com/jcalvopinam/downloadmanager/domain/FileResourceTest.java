@@ -24,10 +24,11 @@
 
 package com.jcalvopinam.downloadmanager.domain;
 
+import java.util.Objects;
+
 import com.jcalvopinam.downloadmanager.DownloadManagerApplicationTest;
 import com.jcalvopinam.downloadmanager.exception.ManagerException;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import static com.jcalvopinam.downloadmanager.DownloadManagerApplicationTest.OUTPUT_FILE;
@@ -37,39 +38,30 @@ import static com.jcalvopinam.downloadmanager.DownloadManagerApplicationTest.OUT
  */
 public class FileResourceTest {
 
-    private FileResource fileResource;
-
-    @Before
-    public void setUp() {
-        String inputFile = DownloadManagerApplicationTest.class.getClassLoader().getResource("items.txt").getPath();
-        String[] argss = {inputFile, OUTPUT_FILE};
-        fileResource = FileResource.of(argss);
-    }
-
     @Test
     public void testOfNotNull() {
-        Assert.assertNotNull(fileResource);
+        Assert.assertNotNull(getFileResource());
     }
 
     @Test
     public void testCheckAndGetInputNotNull() {
-        String input = fileResource.checkAndGetInput();
+        String input = getFileResource().checkAndGetInput();
         Assert.assertNotNull(input);
     }
 
     @Test
     public void testCheckAndGetOutputNotNull() {
-        String output = fileResource.checkAndGetOutput();
-        String expected = OUTPUT_FILE;
+        String output = getFileResource().checkAndGetOutput();
         Assert.assertNotNull(output);
-        Assert.assertEquals(expected, output);
+        Assert.assertEquals(OUTPUT_FILE, output);
     }
 
     @Test
     public void testCheckAndGetOutputNull() {
-        String inputFile = DownloadManagerApplicationTest.class.getClassLoader().getResource("items.txt").getPath();
+        String inputFile = Objects.requireNonNull(
+                DownloadManagerApplicationTest.class.getClassLoader().getResource("items.txt")).getPath();
         String[] args = {inputFile};
-        fileResource = FileResource.of(args);
+        FileResource fileResource = FileResource.of(args);
         String output = fileResource.checkAndGetOutput();
         String expected = "";
         Assert.assertNotNull(output);
@@ -79,13 +71,20 @@ public class FileResourceTest {
     @Test(expected = ManagerException.class)
     public void testInputIsNull() {
         String[] args = {};
-        fileResource = FileResource.of(args);
+        FileResource.of(args);
     }
 
     @Test(expected = ManagerException.class)
     public void testInputNotExist() {
         String[] args = {"/any/place"};
-        fileResource = FileResource.of(args);
+        FileResource.of(args);
+    }
+
+    private FileResource getFileResource() {
+        String inputFile = Objects.requireNonNull(
+                DownloadManagerApplicationTest.class.getClassLoader().getResource("items.txt")).getPath();
+        String[] args = {inputFile, OUTPUT_FILE};
+        return FileResource.of(args);
     }
 
 }

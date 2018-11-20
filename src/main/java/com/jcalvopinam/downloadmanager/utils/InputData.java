@@ -68,7 +68,7 @@ public class InputData {
 
             list.sort(Comparator.comparing(File::getPriority));
         } catch (IOException e) {
-            throw new ManagerException("An error occurred while reading the file: " + e.getMessage());
+            throw new ManagerException("An error occurred while reading the file: " + e.getMessage(), e);
         }
 
         return list;

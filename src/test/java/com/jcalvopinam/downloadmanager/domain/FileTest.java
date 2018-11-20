@@ -25,7 +25,6 @@
 package com.jcalvopinam.downloadmanager.domain;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import static com.jcalvopinam.downloadmanager.DownloadManagerApplicationTest.*;
@@ -35,65 +34,27 @@ import static com.jcalvopinam.downloadmanager.DownloadManagerApplicationTest.*;
  */
 public class FileTest {
 
-    private File fileNotNull;
-    private File fileNull;
-
-    @Before
-    public void setUp() throws Exception {
-        fileNotNull = new File(PRIORITY, FILE_URL, FILE_NAME);
-        fileNull = new File(null, null, null);
-    }
-
     @Test
     public void testPriorityWhenIsNotNull() {
+        final String expectedFile = "File{priority=1, fileUrl='https://www.github.com/juanca87', fileName='github'}";
+
+        final File fileNotNull = new File(PRIORITY, FILE_URL, FILE_NAME);
+        final File fileNull = new File(null, null, null);
+
         Assert.assertNotNull(fileNotNull.getPriority());
-    }
-
-    @Test
-    public void testFileUrlWhenIsNotNull() {
         Assert.assertNotNull(fileNotNull.getFileUrl());
-    }
-
-    @Test
-    public void testFileNameWhenIsNotNull() {
         Assert.assertNotNull(fileNotNull.getFileName());
-    }
 
-    @Test
-    public void equalsWhenAreEquals() {
-        String expected = FILE_NAME;
-        Assert.assertEquals(expected, fileNotNull.getFileName());
-    }
 
-    @Test
-    public void testPriorityWhenIsNull() {
         Assert.assertNull(fileNull.getPriority());
-    }
-
-    @Test
-    public void testFileUrlWhenIsNull() {
         Assert.assertNull(fileNull.getFileUrl());
-    }
-
-    @Test
-    public void testFileNameWhenIsNull() {
         Assert.assertNull(fileNull.getFileName());
-    }
 
-    @Test
-    public void testToString() {
-        String expected = "File{priority=1, fileUrl='https://www.github.com/juanca87', fileName='github'}";
-        Assert.assertEquals(expected, fileNotNull.toString());
-    }
+        Assert.assertEquals(FILE_NAME, fileNotNull.getFileName());
+        Assert.assertEquals(expectedFile, fileNotNull.toString());
+        Assert.assertEquals(fileNotNull, fileNotNull);
 
-    @Test
-    public void testReflexive() {
-        Assert.assertTrue(fileNotNull.equals(fileNotNull));
-    }
-
-    @Test
-    public void testReflexiveIsNull() {
-        Assert.assertFalse(fileNotNull.equals(null));
+        Assert.assertNotEquals(null, fileNotNull);
     }
 
     @Test
@@ -101,8 +62,14 @@ public class FileTest {
         File x = new File(PRIORITY, FILE_URL, FILE_NAME);
         File y = new File(PRIORITY, FILE_URL, FILE_NAME);
 
-        Assert.assertTrue(x.equals(y));
-        Assert.assertTrue(y.equals(x));
+        Assert.assertEquals(x, y);
+        Assert.assertEquals(y, x);
+    }
+
+    @Test
+    public void testEqualsIsNull() {
+        File x = new File(null, null, null);
+        Assert.assertNotEquals(x, null);
     }
 
     @Test
@@ -111,9 +78,9 @@ public class FileTest {
         File y = new File(PRIORITY, FILE_URL, FILE_NAME);
         File z = new File(PRIORITY, FILE_URL, FILE_NAME);
 
-        Assert.assertTrue(x.equals(y));
-        Assert.assertTrue(y.equals(z));
-        Assert.assertTrue(x.equals(z));
+        Assert.assertEquals(x, y);
+        Assert.assertEquals(y, z);
+        Assert.assertEquals(x, z);
     }
 
     @Test
@@ -121,10 +88,10 @@ public class FileTest {
         File x = new File(PRIORITY, FILE_URL, FILE_NAME);
         File y = new File(PRIORITY, FILE_URL, FILE_NAME);
 
-        Assert.assertTrue(x.equals(y));
-        Assert.assertTrue(x.equals(y));
-        Assert.assertTrue(x.equals(y));
-        Assert.assertTrue(x.equals(y));
+        Assert.assertEquals(x, y);
+        Assert.assertEquals(x, y);
+        Assert.assertEquals(x, y);
+        Assert.assertEquals(x, y);
     }
 
     @Test
@@ -133,7 +100,7 @@ public class FileTest {
         File y = new File(PRIORITY, FILE_URL, FILE_NAME);
 
         Assert.assertTrue(x.equals(y) && y.equals(x));
-        Assert.assertTrue(x.hashCode() == y.hashCode());
+        Assert.assertEquals(x.hashCode(), y.hashCode());
     }
 
 }

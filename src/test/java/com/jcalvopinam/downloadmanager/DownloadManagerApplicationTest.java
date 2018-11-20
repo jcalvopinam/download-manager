@@ -24,8 +24,9 @@
 
 package com.jcalvopinam.downloadmanager;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import com.jcalvopinam.downloadmanager.core.Manager;
 import com.jcalvopinam.downloadmanager.domain.File;
@@ -51,9 +52,13 @@ public class DownloadManagerApplicationTest {
     public static final String FILE_NAME = "github";
     public static final int PRIORITY = 1;
 
+    /**
+     * This test only checks the invocation to the main method.
+     */
     @Test
     public void testMainMethod() {
-        String inputFile = DownloadManagerApplicationTest.class.getClassLoader().getResource("items.txt").getPath();
+        String inputFile = Objects.requireNonNull(
+                DownloadManagerApplicationTest.class.getClassLoader().getResource("items.txt")).getPath();
         String[] args = {inputFile, OUTPUT_FILE};
 
         PowerMockito.mockStatic(InputData.class);
@@ -71,7 +76,7 @@ public class DownloadManagerApplicationTest {
 
     private List<File> createFileList() {
         File file = new File(PRIORITY, FILE_URL, FILE_NAME);
-        return Arrays.asList(file);
+        return Collections.singletonList(file);
     }
 
 }

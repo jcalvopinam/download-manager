@@ -2,9 +2,9 @@
 6;http://tug.ctan.org/tex-archive/macros/latex/contrib/eurofont/readme.txt
 2;https://raw.githubusercontent.com/juanca87/example-envers/master/README.md
 3;ftp://ftp.f-secure.com/support/tools/uitool/readme.txt
-5;ftp://ftp.lantronix.com/pub/old_rel/ezwebcon/v1.1.7/tutorial.txt
+5;https://ftp.mozilla.org/pub/firefox/releases/latest/README.txt
 11;https://previews.123rf.com/images/koya79/koya791805/koya79180500111/101829432-happy-emoji-isolated-on-white-background-smiling-face-emoticon-3d-rendering.jpg
-4;ftp://ftp.ddbj.nig.ac.jp/ddbj_database/README.TXT
+4;https://archive.mozilla.org/pub/thunderbird/releases/latest/README.txt
 9;https://s3.envato.com/files/234841301/preview.jpg
 7;https://cdn3.vectorstock.com/images/1000x1000/88/72/17958872.jpg
 1;ftp://ftp.ncdc.noaa.gov/pub/download/wxcoder3_201809_inventory.txt

@@ -53,6 +53,19 @@ public class ManagerTest {
         Manager.INSTANCE.download(files, OUTPUT_FILE);
     }
 
+    @Test
+    public void testDownloadMethodWhenPoolIsShutdown() {
+        List<File> files = createFileList();
+        Manager.INSTANCE.download(files, OUTPUT_FILE);
+        Manager.INSTANCE.download(files, OUTPUT_FILE);
+        Manager.INSTANCE.download(files, OUTPUT_FILE);
+        Manager.INSTANCE.download(files, OUTPUT_FILE);
+        Manager.INSTANCE.download(files, OUTPUT_FILE);
+        Manager.INSTANCE.shutdown();
+        Manager.INSTANCE.download(files, OUTPUT_FILE);
+        Manager.INSTANCE.download(files, OUTPUT_FILE);
+    }
+
     private List<File> createFileList() {
         List<File> fileList = new ArrayList<>();
         IntStream.range(0, 20)

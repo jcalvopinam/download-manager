@@ -44,7 +44,7 @@ public enum Manager {
     INSTANCE;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Manager.class);
-    private final ExecutorService pool = Executors.newFixedThreadPool(Constants.POOL_SIZE);
+    private ExecutorService pool = Executors.newFixedThreadPool(Constants.POOL_SIZE);
 
     public void download(List<File> files, String saveAs) {
 
@@ -54,6 +54,7 @@ public enum Manager {
         LOGGER.info("{}", legend);
         LOGGER.info("\tTID_\tPID_\tStatus_");
 
+        this.createIfIsNullPool();
         CompletableFuture<?>[] futures = files.stream()
                                               .map(file -> new DownloadFile(file, saveAs))
                                               .collect(Collectors.toList())
@@ -62,10 +63,21 @@ public enum Manager {
                                               .toArray(CompletableFuture[]::new);
 
         CompletableFuture.allOf(futures).join();
-        pool.shutdown();
 
         LOGGER.info(":: The downloads are complete! ::");
 
+    }
+
+    private void createIfIsNullPool() {
+        if (this.pool.isShutdown()) {
+            this.pool = Executors.newFixedThreadPool(Constants.POOL_SIZE);
+        }
+    }
+
+    public void shutdown() {
+        if (!this.pool.isShutdown()) {
+            this.pool.shutdown();
+        }
     }
 
 }
